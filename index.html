@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Village du hasard</title>
+    <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/pierreg78-maker/village/main/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-main: #f0f4ff;
+            --bg-header: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 50%, #fd79a8 100%);
+            --card-bg: #ffffff;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --accent: #6c5ce7;
+            --accent-hover: #5a4bd1;
+            --shadow-card: 0 4px 15px rgba(0,0,0,0.08);
+            --shadow-card-hover: 0 8px 30px rgba(108,92,231,0.25);
+            --radius: 16px;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ---- HEADER ---- */
+        header {
+            background: var(--bg-header);
+            text-align: center;
+            padding: 50px 20px 55px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -10%;
+            width: 120%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: var(--bg-main);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+        }
+
+        header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            color: #fff;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            margin-top: 10px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ---- FORMES FLOTTANTES ---- */
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.12;
+            background: #fff;
+            animation: floatShape 8s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) { width: 60px; height: 60px; top: 15%; left: 8%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 40px; height: 40px; top: 60%; left: 15%; animation-delay: 1.5s; }
+        .shape:nth-child(3) { width: 80px; height: 80px; top: 20%; right: 10%; animation-delay: 3s; }
+        .shape:nth-child(4) { width: 30px; height: 30px; top: 65%; right: 20%; animation-delay: 4.5s; }
+        .shape:nth-child(5) { width: 50px; height: 50px; top: 40%; left: 45%; animation-delay: 2s; }
+        .shape:nth-child(6) { width: 25px; height: 25px; top: 10%; left: 60%; animation-delay: 5s; }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-18px) scale(1.1); }
+        }
+
+        /* ---- CONTENEUR PRINCIPAL ---- */
+        main {
+            max-width: 1100px;
+            margin: -20px auto 60px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ---- GRILLE ---- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* ---- CARTE ---- */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-card-hover);
+        }
+
+        /* ---- ZONE ÉMOJI (remplace l'image) ---- */
+        .card-icon {
+            width: 100%;
+            height: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-icon::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.12);
+        }
+
+        .card-icon::after {
+            content: '';
+            position: absolute;
+            bottom: -15%;
+            left: -10%;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .card-icon span {
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+            transition: transform 0.35s ease;
+        }
+
+        .card:hover .card-icon span {
+            transform: scale(1.15) rotate(-4deg);
+        }
+
+        /* Dégradés par carte */
+        .icon-vitrine    { background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); }
+        .icon-mots       { background: linear-gradient(135deg, #00cec9 0%, #0984e3 100%); }
+        .icon-loto       { background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%); }
+        .icon-blackjack  { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        .icon-421        { background: linear-gradient(135deg, #00b894 0%, #00a085 100%); }
+        .icon-roue       { background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%); }
+        .icon-tresor     { background: linear-gradient(135deg, #f9ca24 0%, #f0932b 100%); }
+
+        /* ---- CORPS DE CARTE ---- */
+        .card-body {
+            padding: 22px 24px 26px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body h2 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .card-body p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .card-btn {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 10px 24px;
+            background: var(--accent);
+            color: #fff;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.25s ease, transform 0.2s ease;
+            align-self: flex-start;
+        }
+
+        .card:hover .card-btn {
+            background: var(--accent-hover);
+            transform: scale(1.04);
+        }
+        .back-btn {
+            display: block;
+            text-align: center;
+            margin: 60px auto 40px;
+            padding: 14px 40px;
+            background: #6b7280;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+        }
+
+        /* ---- FOOTER ---- */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 680px) {
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            header {
+                padding: 40px 16px 48px;
+            }
+            main {
+                padding: 0 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== HEADER ====== -->
+    <header>
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+        <h1>Le Village du hasard</h1>
+        <p>Jeux de cartes, dés, roue et mots… Tout repose sur la chance !</p>
+    </header>
+
+    <!-- ====== CONTENU ====== -->
+    <main>
+        <div class="grid">
+
+            <!-- Vitrine enchantée -->
+            <a href="https://pierreg78-maker.github.io/vitrine-enchantee/" class="card">
+                <div class="card-icon icon-vitrine"><span>🔮</span></div>
+                <div class="card-body">
+                    <h2>Vitrine enchantée</h2>
+                    <p>Une vitrine magique qui révèle ses mystères au gré de votre curiosité. Cliquez, explorez et laissez-vous surprendre par ce que l'inattendu réserve.</p>
+                    <span class="card-btn">Découvrir</span>
+                </div>
+            </a>
+
+            <!-- Mots mêlés -->
+            <a href="https://pierreg78-maker.github.io/mots-meles/" class="card">
+                <div class="card-icon icon-mots"><span>Ⓐ</span></div>
+                <div class="card-body">
+                    <h2>Mots mêlés</h2>
+                    <p>Cherchez et trouvez les mots cachés dans la grille ! Un jeu de patience et d'observation où chaque partie mêle hasard et réflexion.</p>
+                    <span class="card-btn">Jouer</span>
+                </div>
+            </a>
+
+            <!-- Loto -->
+            <a href="https://pierreg78-maker.github.io/loto/" class="card">
+                <div class="card-icon icon-loto"><span>🎫</span></div>
+                <div class="card-body">
+                    <h2>Loto</h2>
+                    <p>Tirez les numéros et cochez vos cartons ! Le pur hasard décide du gagnant. Serez-vous le premier à compléter une quine ou un carton plein ?</p>
+                    <span class="card-btn">Jouer</span>
+                </div>
+            </a>
+
+            <!-- Blackjack -->
+            <a href="https://pierreg78-maker.github.io/blackjack/" class="card">
+                <div class="card-icon icon-blackjack"><span>🃏</span></div>
+                <div class="card-body">
+                    <h2>Blackjack</h2>
+                    <p>Rapprochez-vous de 21 sans les dépasser ! Distribuez les cartes, prenez les bonnes décisions… et croisez les doigts pour que la chance vous sourie.</p>
+                    <span class="card-btn">Jouer</span>
+                </div>
+            </a>
+
+            <!-- 421 -->
+            <a href="https://pierreg78-maker.github.io/421/" class="card">
+                <div class="card-icon icon-421"><span>🎲</span></div>
+                <div class="card-body">
+                    <h2>421</h2>
+                    <p>Lancez les dés et tentez d'obtenir le fameux 4-2-1 ! Un classique des jeux de dés où chaque lancer peut tout changer. À vous de jouer !</p>
+                    <span class="card-btn">Jouer</span>
+                </div>
+            </a>
+
+            <!-- La Roue de la Fortune -->
+            <a href="https://pierreg78-maker.github.io/la_roue_de_la_fortune/" class="card">
+                <div class="card-icon icon-roue"><span>🎡</span></div>
+                <div class="card-body">
+                    <h2>La Roue de la Fortune</h2>
+                    <p>VERSION TEST. GAINS NON-COMPTABILISES. Faites tourner la roue et laissez le destin choisir ! Expressions courantes à deviner. </p>
+                    <span class="card-btn">Jouer</span>
+                </div>
+            </a>
+
+            <!-- Trésor des âges -->
+            <a href="https://pierreg78-maker.github.io/tresor_des_ages/" class="card">
+                <div class="card-icon icon-tresor"><span>🏺</span></div>
+                <div class="card-body">
+                    <h2>Trésor des âges</h2>
+                    <p>Partez à la chasse au trésor à travers les époques ! Fouillez, déchiffrez et espérez que le hasard place la bonne découverte sur votre chemin.</p>
+                    <span class="card-btn">Découvrir</span>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <!-- ====== FOOTER ====== -->
+    <footer>
+       <!-- Bouton retour à l'Atelier Mémoire -->
+        <a href="https://pierreg78-maker.github.io/Atelier/" class="back-btn">
+            ← Retour à l'Atelier Mémoire
+        </a>
+    </footer>
+
+</body>
+</html>
